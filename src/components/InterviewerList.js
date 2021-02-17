@@ -7,7 +7,7 @@ export default function InterviewerList(props) {
       <InterviewerListItem 
         avatar = {interviewer.avatar}
         name = {interviewer.name}
-        selected = {props.interviewer === index}
+        selected = {props.interviewer === interviewer.id}
         setInterviewer ={() => props.setInterviewer(interviewer.id)}
         key = {index}
       />
