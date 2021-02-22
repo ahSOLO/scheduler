@@ -1,6 +1,7 @@
 import React, {useReducer, useEffect} from 'react';
 import axios from "axios";
 
+
 export default function useApplicationData() {
 
   const SET_DAY = "SET_DAY";
@@ -63,11 +64,9 @@ export default function useApplicationData() {
     state.days[dayIndex].appointments.forEach( ele => {
       if (state.appointments[ele].interview) {
         count++;
-        console.log("counted");
       } 
     })
     daysCopy[dayIndex].spots = 5 - count;
-    console.log(daysCopy);
     dispatch({type: SET_SPOTS, value: daysCopy});
   }
 
@@ -78,18 +77,18 @@ export default function useApplicationData() {
   const setDay = day => dispatch({type: SET_DAY, value: day});
 
   function cancelInterview(id) {
-    const appointment = {
-      ...state.appointments[id]
-    }
-    appointment.interview = null;
+    // const appointment = {
+    //   ...state.appointments[id]
+    // }
+    // appointment.interview = null;
 
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    }
+    // const appointments = {
+    //   ...state.appointments,
+    //   [id]: appointment
+    // }
 
     return axios.delete(`/api/appointments/${id}`)
-      .then( () => dispatch({ type: SET_INTERVIEW, value: appointments }))
+      // .then( () => dispatch({ type: SET_INTERVIEW, value: appointments }))
   }
 
   function bookInterview(id, interview) {
@@ -98,14 +97,37 @@ export default function useApplicationData() {
       interview: { ...interview }
     }
     
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
+    // const appointments = {
+    //   ...state.appointments,
+    //   [id]: appointment
+    // };
 
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then( () => dispatch({ type: SET_INTERVIEW, value: appointments }))
+      // .then( () => dispatch({ type: SET_INTERVIEW, value: appointments }))
   }
+
+  // Websockets
+    const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+
+    useEffect( () => {
+      ws.onmessage = event => {
+        const data = JSON.parse(event.data);
+        console.log("DATA", data);
+        if (data.type === SET_INTERVIEW) {
+          const appointment = { 
+            ...state.appointments[data.id],
+            interview: data.interview
+          }
+          const appointments = {
+            ...state.appointments,
+            [data.id]: appointment
+          };
+          dispatch({type: SET_INTERVIEW, value: appointments })
+        }
+      }
+  
+      return () => ws.onmessage = null;
+    }, [state.appointments]);
 
   return {state, setDay, cancelInterview, bookInterview};
 }
