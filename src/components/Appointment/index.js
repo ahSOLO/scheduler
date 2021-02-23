@@ -24,7 +24,7 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(initial);
 
   function save(name, interviewer) {
-    if (!name || !interviewer ) return;
+    // if (!name || !interviewer ) return;
     transition(SAVING);
     const interview = {
       student: name,
