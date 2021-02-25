@@ -4,7 +4,6 @@ import reducer, {SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW, SET_SPOTS} from "
 
 export default function useApplicationData() {
 
-  // State
   const [state, dispatch] = useReducer(reducer, {
     day:"Monday",
     days:[],
@@ -23,7 +22,6 @@ export default function useApplicationData() {
     })
   }, [])
 
-  // Functions
   function updateSpots(day) {
     if (state.days.length <= 0) return;
     // Get day index
@@ -55,18 +53,7 @@ export default function useApplicationData() {
   const setDay = day => dispatch({type: SET_DAY, value: day});
 
   function cancelInterview(id) {
-    // const appointment = {
-    //   ...state.appointments[id]
-    // }
-    // appointment.interview = null;
-
-    // const appointments = {
-    //   ...state.appointments,
-    //   [id]: appointment
-    // }
-
     return axios.delete(`/api/appointments/${id}`)
-      // .then( () => dispatch({ type: SET_INTERVIEW, value: appointments }))
   }
 
   function bookInterview(id, interview) {
@@ -74,14 +61,7 @@ export default function useApplicationData() {
       ...state.appointments[id],
       interview: { ...interview }
     }
-    
-    // const appointments = {
-    //   ...state.appointments,
-    //   [id]: appointment
-    // };
-
     return axios.put(`/api/appointments/${id}`, appointment)
-      // .then( () => dispatch({ type: SET_INTERVIEW, value: appointments }))
   }
 
   // Websockets
