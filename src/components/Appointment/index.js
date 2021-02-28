@@ -37,14 +37,12 @@ export default function Appointment(props) {
       interviewer
     };
     props.bookInterview(props.id, interview)
-      // .then(() => transition(SHOW))
       .catch(() => transition(ERROR_SAVE, true));
   }
 
   function del() {
     transition(DELETING, true);
     props.cancelInterview(props.id)
-      // .then(() => transition(EMPTY))
       .catch(() => transition(ERROR_DELETE, true));
   }
 
