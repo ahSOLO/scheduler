@@ -1,4 +1,4 @@
-import React, {useReducer, useEffect} from 'react';
+import {useReducer, useEffect} from 'react';
 import axios from "axios";
 import reducer, {SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW, SET_SPOTS} from "../reducers/application";
 
@@ -32,6 +32,7 @@ export default function useApplicationData() {
         dayIndex = i;
         return true;
       }
+      return false;
     });
     // Create a deep copy of the days array with respect to the spots in question
     const daysCopy = [...state.days];
