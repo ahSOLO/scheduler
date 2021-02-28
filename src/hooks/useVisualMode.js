@@ -8,8 +8,7 @@ export default function useVisualMode(initial) {
     setMode( (prevMode) => {
       setHistory( (prevHist) => {
         if (replace) {
-          let prevHistCopy = [...prevHist];
-          return [...prevHistCopy];
+          return prevHist;
         } else {
           return [...prevHist, prevMode];
         }
