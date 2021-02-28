@@ -26,6 +26,7 @@ export default function useApplicationData() {
     if (state.days.length <= 0) return;
     // Get day index
     let dayIndex;
+    // .some used to break out of iteration early
     state.days.some( (dayObj, i) => {
       if (dayObj.name === day) {
         dayIndex = i;
